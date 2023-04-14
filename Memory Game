@@ -1,0 +1,59 @@
+import random
+
+# Create a list of symbols to be matched
+symbols = ['*', '#', '$', '%', '&', '@', '!', '?']
+
+# Create a board with symbols randomly placed in pairs
+board_size = 4
+board = []
+for i in range(board_size):
+    row = []
+    for j in range(board_size):
+        symbol = random.choice(symbols)
+        row.append(symbol)
+        symbols.remove(symbol)
+    board.append(row)
+
+# Create a function to display the board
+def display_board(board):
+    for row in board:
+        print(' '.join(row))
+
+# Create a function to play the game
+def play_game():
+    # Initialize the game state
+    remaining_pairs = board_size * board_size // 2
+    flipped_tiles = []
+    matched_pairs = []
+    
+    while remaining_pairs > 0:
+        # Display the current state of the board
+        display_board(board)
+        
+        # Ask the user to flip over two tiles
+        print('Enter the row and column of the first tile:')
+        row1 = int(input())
+        col1 = int(input())
+        flipped_tiles.append((row1, col1))
+        
+        print('Enter the row and column of the second tile:')
+        row2 = int(input())
+        col2 = int(input())
+        flipped_tiles.append((row2, col2))
+        
+        # Check if the two flipped tiles match
+        if board[row1][col1] == board[row2][col2]:
+            print('Match found!')
+            matched_pairs.append((row1, col1))
+            matched_pairs.append((row2, col2))
+            remaining_pairs -= 1
+        else:
+            print('No match.')
+            
+        # Reset the flipped tiles
+        flipped_tiles = []
+        
+    print('Game over! You won.')
+    
+# Start the game
+play_game()
