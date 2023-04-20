@@ -1,0 +1,54 @@
+# Initialize Pygame
+pygame.init()
+
+# Set up the game window
+window = pygame.display.set_mode((500, 500))
+pygame.display.set_caption("Sliding Puzzle Game")
+puzzle = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, None]
+]
+import random
+
+# Shuffle the puzzle pieces
+for i in range(1000):
+    row, col = None, None
+    while row is None or col is None:
+        row, col = random.choice([(i, j) for i in range(3) for j in range(3)])
+    move = random.choice(["up", "down", "left", "right"])
+    if move == "up" and row > 0:
+        puzzle[row][col], puzzle[row-1][col] = puzzle[row-1][col], puzzle[row][col]
+    elif move == "down" and row < 2:
+        puzzle[row][col], puzzle[row+1][col] = puzzle[row+1][col], puzzle[row][col]
+    elif move == "left" and col > 0:
+        puzzle[row][col], puzzle[row][col-1] = puzzle[row][col-1], puzzle[row][col]
+    elif move == "right" and col < 2:
+        puzzle[row][col], puzzle[row][col+1] = puzzle[row][col+1], puzzle[row][col]
+# Set up the puzzle piece size and position
+piece_width = 100
+piece_height = 100
+padding = 10
+
+# Draw the puzzle pieces on the game window
+for row in range(3):
+    for col in range(3):
+        piece_value = puzzle[row][col]
+        if piece_value is None:
+            continue
+        piece_rect = pygame.Rect(
+            padding + col * (piece_width + padding),
+            padding + row * (piece_height + padding),
+            piece_width,
+            piece_height
+        )
+        pygame.draw.rect(window, (255, 255, 255), piece_rect)
+        font = pygame.font.Font(None, 36)
+        text = font.render(str(piece_value), True, (0, 0, 0))
+        text_rect = text.get_rect(center=piece_rect.center)
+        window.blit(text, text_rect)
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
