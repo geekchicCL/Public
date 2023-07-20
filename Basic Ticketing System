@@ -1,0 +1,88 @@
+# Help Desk Ticketing System
+class HelpDeskTicketingSystem:
+    def __init__(self):
+        self.tickets = {}  # Dictionary to store ticket details
+        self.ticket_counter = 1
+
+    def create_ticket(self, requester, issue):
+        ticket_id = self.ticket_counter
+        self.tickets[ticket_id] = {
+            'requester': requester,
+            'issue': issue,
+            'status': 'Open',
+            'escalated': False
+        }
+        self.ticket_counter += 1
+        print(f"Ticket #{ticket_id} created successfully.")
+
+    def view_all_tickets(self):
+        if self.tickets:
+            print("All Tickets:")
+            for ticket_id, ticket_details in self.tickets.items():
+                print(f"Ticket #{ticket_id} - Requester: {ticket_details['requester']} - Issue: {ticket_details['issue']} - Status: {ticket_details['status']} - Escalated: {ticket_details['escalated']}")
+        else:
+            print("No tickets found.")
+
+    def edit_ticket(self, ticket_id, new_requester, new_issue):
+        if ticket_id in self.tickets:
+            ticket = self.tickets[ticket_id]
+            ticket['requester'] = new_requester
+            ticket['issue'] = new_issue
+            print(f"Ticket #{ticket_id} edited successfully.")
+        else:
+            print("Invalid ticket ID.")
+
+    def resolve_ticket(self, ticket_id):
+        if ticket_id in self.tickets:
+            self.tickets[ticket_id]['status'] = 'Resolved'
+            print(f"Ticket #{ticket_id} marked as resolved.")
+        else:
+            print("Invalid ticket ID.")
+
+    def escalate_ticket(self, ticket_id):
+        if ticket_id in self.tickets:
+            self.tickets[ticket_id]['escalated'] = True
+            print(f"Ticket #{ticket_id} escalated.")
+        else:
+            print("Invalid ticket ID.")
+
+# Main function for the help desk ticketing system
+def main():
+    ticketing_system = HelpDeskTicketingSystem()
+
+    while True:
+        print("\n--- Help Desk Ticketing System ---")
+        print("1. Create a new ticket")
+        print("2. View all tickets")
+        print("3. Edit a ticket")
+        print("4. Resolve a ticket")
+        print("5. Escalate a ticket")
+        print("6. Exit")
+        choice = input("Enter your choice (1/2/3/4/5/6): ").strip()
+
+        if choice == "1":
+            requester = input("Enter your name: ")
+            issue = input("Enter the ticket issue: ")
+            ticketing_system.create_ticket(requester, issue)
+        elif choice == "2":
+            ticketing_system.view_all_tickets()
+        elif choice == "3":
+            ticket_id = int(input("Enter the ticket ID to edit: "))
+            new_requester = input("Enter the new requester name: ")
+            new_issue = input("Enter the new ticket issue: ")
+            ticketing_system.edit_ticket(ticket_id, new_requester, new_issue)
+        elif choice == "4":
+            ticket_id = int(input("Enter the ticket ID to resolve: "))
+            ticketing_system.resolve_ticket(ticket_id)
+        elif choice == "5":
+            ticket_id = int(input("Enter the ticket ID to escalate: "))
+            ticketing_system.escalate_ticket(ticket_id)
+        elif choice == "6":
+            print("Exiting Help Desk Ticketing System.")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+# Example Usage
+if __name__ == "__main__":
+    main()
